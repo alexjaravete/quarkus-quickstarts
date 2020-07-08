@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "known_fruits")
-@Cacheable
+//@Cacheable
 @NamedQuery(name = Fruit.FIND_ALL, query = "SELECT f FROM Fruit f ORDER BY f.name", hints = @QueryHint(name = "org.hibernate.cacheable", value = "true"))
 public class Fruit {
     public static final String FIND_ALL = "Fruits.findAll";

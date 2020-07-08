@@ -93,6 +93,28 @@ public class FruitsEndpointTest {
     }
 
     @Test
+    public void testListAllFruitsTwice() {
+        given()
+                .when()
+                .get("/fruits/")
+                .then()
+                .statusCode(200);
+
+        given()
+                .when()
+                .get("/fruits/")
+                .then()
+                .statusCode(200);
+
+        given()
+                .when()
+                .get("/fruits/")
+                .then()
+                .statusCode(200);
+
+    }
+
+    @Test
     public void testEntityNotFoundForDelete() {
         given()
             .when()
