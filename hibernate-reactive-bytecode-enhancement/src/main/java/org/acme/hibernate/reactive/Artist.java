@@ -22,7 +22,7 @@ public class Artist {
 
 	private String name;
 
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	private List<Painting> paintings;
 
 	public Artist() {
