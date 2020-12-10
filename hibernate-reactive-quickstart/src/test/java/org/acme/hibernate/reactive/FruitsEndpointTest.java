@@ -12,6 +12,18 @@ import static org.hamcrest.text.IsEmptyString.emptyString;
 @QuarkusTest
 public class FruitsEndpointTest {
 
+	@Test
+	public void testIssueFruits() {
+		//List all, should have all 3 fruits the database has initially:
+		given()
+				.when()
+				.get("/threadIssueFind/2")
+				.then()
+				.statusCode(200)
+				.body(
+						containsString("Apple") );
+	}
+
     @Test
     public void testListAllFruits() {
         //List all, should have all 3 fruits the database has initially:

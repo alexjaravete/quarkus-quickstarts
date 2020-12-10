@@ -44,6 +44,13 @@ public class FruitMutinyResource {
 
     @GET
     @Path("{id}")
+    public Uni<Fruit> threadIssueFind(@PathParam Integer id) {
+        Uni<Fruit> findWork = mutinySession.find( Fruit.class, id );
+        return mutinySession.withTransaction( tx -> findWork );
+    }
+
+    @GET
+    @Path("{id}")
     public Uni<Fruit> getSingle(@PathParam Integer id) {
         return mutinySession.find(Fruit.class, id);
     }
