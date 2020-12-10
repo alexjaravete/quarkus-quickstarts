@@ -46,6 +46,13 @@ public class FruitsRoutes {
         return session.find(Fruit.class, Integer.valueOf(id));
     }
 
+    @Route(methods = GET, path = "/find/:id")
+    public Uni<Fruit> threadIssueFind(@Param String id) {
+        Uni<Fruit> findWork = session.find( Fruit.class,  Integer.valueOf(id) );
+        return session.withTransaction( tx -> findWork );
+    }
+
+
     @Route(methods = POST, path = "/")
     public Uni<Fruit> create(@Body Fruit fruit, HttpServerResponse response) {
         if (fruit == null || fruit.getId() != null) {
