@@ -17,7 +17,7 @@ public class FruitsEndpointTest {
 		//List all, should have all 3 fruits the database has initially:
 		given()
 				.when()
-				.get("/threadIssueFind/2")
+				.get("/fruits/find/2")
 				.then()
 				.statusCode(200)
 				.body(
