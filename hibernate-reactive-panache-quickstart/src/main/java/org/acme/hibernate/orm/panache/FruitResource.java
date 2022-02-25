@@ -20,6 +20,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.hibernate.reactive.mutiny.Mutiny;
+
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestPath;
 
@@ -36,6 +38,9 @@ import io.smallrye.mutiny.Uni;
 @Produces("application/json")
 @Consumes("application/json")
 public class FruitResource {
+
+	@Inject
+	Mutiny.SessionFactory sf;
 
     private static final Logger LOGGER = Logger.getLogger(FruitResource.class.getName());
 
@@ -60,7 +65,23 @@ public class FruitResource {
                     .replaceWith(Response.ok(fruit).status(CREATED)::build);
     }
 
-    @PUT
+	private static final int NUMBER = 10;
+
+	@POST
+	@Path("multi-persist")
+	public Uni<Response> create() {
+		Fruit[] fruits = new Fruit[NUMBER];
+		for ( int i = 0; i < NUMBER; i++ ) {
+			fruits[i] = new Fruit( "Fruit" + (i + 1) );
+		}
+
+		return sf.openSession().chain( session -> session.withTransaction( t -> session
+						.persistAll( fruits ) ).eventually( session::close )
+				)
+				.replaceWith( Response.status( CREATED )::build );
+	}
+
+	@PUT
     @Path("{id}")
     public Uni<Response> update(@RestPath Long id, Fruit fruit) {
         if (fruit == null || fruit.name == null) {
