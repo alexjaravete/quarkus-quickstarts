@@ -12,29 +12,15 @@ public class BearerTokenAuthenticationTest {
 
     @Test
     public void testAdminAccess() {
-        RestAssured.given().auth().oauth2(getAccessToken("admin"))
-                .when().get("/api/admin")
-                .then()
-                .statusCode(200);
-
-        RestAssured.given().auth().oauth2(getAccessToken("alice"))
-                .when().get("/api/admin")
-                .then()
-                .statusCode(403);
-    }
-
-    @Test
-    public void testUserAccess() {
-
-        RestAssured.given().auth().oauth2(getAccessToken("alice"))
-                .when().get("/api/users/me")
-                .then()
-                .statusCode(200);
-
-        RestAssured.given().auth().oauth2(getAccessToken("admin"))
-                .when().get("/api/users/me")
-                .then()
-                .statusCode(200);
+        String accessToken = getAccessToken( "admin" );
+        for ( int i = 0; i < 100; i++ ) {
+            System.out.println("Request " + i);
+            RestAssured.given().auth().oauth2( accessToken )
+                    .when().get("/api/admin")
+                    .then()
+                    .statusCode(200);
+            System.out.println("Request " + i +": Done!");
+        }
     }
 
     protected String getAccessToken(String userName) {
