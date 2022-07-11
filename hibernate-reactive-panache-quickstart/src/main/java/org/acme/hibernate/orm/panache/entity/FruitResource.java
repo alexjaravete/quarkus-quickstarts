@@ -1,4 +1,4 @@
-package org.acme.hibernate.orm.panache;
+package org.acme.hibernate.orm.panache.entity;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;

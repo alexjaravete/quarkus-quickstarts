@@ -1,12 +1,14 @@
-package org.acme.hibernate.orm.panache;
+package org.acme.hibernate.orm.panache.entity;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 
-@Entity
+@Entity(name="EntityFruit")
+@Table(name="EntityFruit")
 @Cacheable
 public class Fruit extends PanacheEntity {
 
