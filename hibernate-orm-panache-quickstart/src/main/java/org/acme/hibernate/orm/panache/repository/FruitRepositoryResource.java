@@ -1,6 +1,7 @@
 package org.acme.hibernate.orm.panache.repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.quarkus.panache.common.Sort;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.acme.hibernate.orm.panache.entity.FruitEntity;
 
 @Path("repository/fruits")
 @ApplicationScoped
@@ -35,9 +38,25 @@ public class FruitRepositoryResource {
 
     private static final Logger LOGGER = Logger.getLogger(FruitRepositoryResource.class.getName());
 
+    @RegisterForReflection
+    public static class NameView {
+        final String name;
+
+        public NameView(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     @GET
-    public List<Fruit> get() {
-        return fruitRepository.listAll(Sort.by("name"));
+    public List<String> get() {
+        return FruitEntity.find("SELECT DISTINCT name from FruitEntity a")
+                .project( NameView.class ).list()
+                .stream().map( NameView::getName )
+                .collect( Collectors.toList() );
     }
 
     @GET
