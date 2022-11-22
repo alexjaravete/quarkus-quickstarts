@@ -1,4 +1,5 @@
-%prod.quarkus.datasource.db-kind=postgresql
+quarkus
+  datasource.db-kind=postgresql
 %prod.quarkus.datasource.username=quarkus_test
 %prod.quarkus.datasource.password=quarkus_test
 
