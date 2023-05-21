@@ -1,34 +1,21 @@
 package org.acme.hibernate.orm.panache;
 
-import static jakarta.ws.rs.core.Response.Status.CREATED;
-import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
-import static jakarta.ws.rs.core.Response.Status.NO_CONTENT;
-
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.quarkus.hibernate.reactive.panache.Panache;
+import io.smallrye.mutiny.CompositeException;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-
 import org.jboss.logging.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.List;
 
-import io.quarkus.hibernate.reactive.panache.Panache;
-import io.quarkus.panache.common.Sort;
-import io.smallrye.mutiny.CompositeException;
-import io.smallrye.mutiny.Uni;
+import static jakarta.ws.rs.core.Response.Status.*;
 
 @Path("fruits")
 @ApplicationScoped
@@ -40,7 +27,8 @@ public class FruitResource {
 
     @GET
     public Uni<List<Fruit>> get() {
-        return Fruit.listAll(Sort.by("name"));
+        // Same issue via CriteriaBuilder here as well.
+        return Fruit.find("select f from Fruit f left join fetch f.basket").list();
     }
 
     @GET
