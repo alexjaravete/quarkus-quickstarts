@@ -27,7 +27,4 @@ public class Fruit extends PanacheEntityBase {
     public Fruit(String name) {
         this.name = name;
     }
-
-
-
 }
