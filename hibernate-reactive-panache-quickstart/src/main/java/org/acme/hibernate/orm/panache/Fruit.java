@@ -13,7 +13,7 @@ public class Fruit extends PanacheEntityBase {
     public Long id;
 
     @Id
-    @JoinColumn(name = "basket_id", referencedColumnName = "id")
+    @JoinColumn(name = "basket_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "basket_fk"))
     @ManyToOne(fetch = FetchType.LAZY)
     public FruitBasket basket;
 
