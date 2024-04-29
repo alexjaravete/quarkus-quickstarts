@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.LockModeType;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -46,11 +47,12 @@ public class FruitResource {
     @GET
     @Path("{id}")
     public Uni<Fruit> getSingle(Long id) {
-        return Fruit.findById(id);
+        return Fruit.findById( id, LockModeType.PESSIMISTIC_WRITE );
     }
 
     @POST
     public Uni<Response> create(Fruit fruit) {
+
         if (fruit == null || fruit.id != null) {
             throw new WebApplicationException("Id was invalidly set on request.", 422);
         }
